@@ -1,0 +1,76 @@
+-- Produto
+CREATE TABLE produto (
+    id_produto BIGINT PRIMARY KEY,
+    sku VARCHAR(512),
+    upc VARCHAR(512),
+    categoria VARCHAR(512),
+    subcategoria VARCHAR(512),
+    departamento VARCHAR(512),
+    preco_normal NUMERIC(8,2),
+    preco_promoc NUMERIC(8,2)
+);
+
+-- Cliente
+CREATE TABLE cliente (
+    id_cliente BIGINT PRIMARY KEY,
+    nome VARCHAR(512),
+    telefone VARCHAR(512),
+    email VARCHAR(512)
+);
+
+-- Loja
+CREATE TABLE loja (
+    id_loja BIGINT PRIMARY KEY,
+    designacao VARCHAR(512),
+    telefone VARCHAR(512),
+    gerente VARCHAR(512),
+    rua VARCHAR(512),
+    cidade VARCHAR(512)
+);
+
+-- Tempo
+CREATE TABLE tempo (
+    id_tempo BIGINT PRIMARY KEY,
+    hora VARCHAR(512),
+    dia INTEGER,
+    mes INTEGER,
+    ano INTEGER
+);
+
+-- Promocao
+CREATE TABLE promocao (
+    id_promocao BIGINT PRIMARY KEY,
+    tipo_promo VARCHAR(512),
+    descricao_promo VARCHAR(512),
+    duracao_promo INTEGER
+);
+
+-- Vendas
+CREATE TABLE vendas (
+    id_vendas BIGINT PRIMARY KEY,
+    quant_vendida INTEGER,
+    valor_vendido NUMERIC(8,2),
+    custo_produto NUMERIC(8,2),
+    lucro NUMERIC(8,2),
+    promocao_id_promocao BIGINT,
+    tempo_id_tempo BIGINT,
+    loja_id_loja BIGINT,
+    cliente_id_cliente BIGINT,
+    produto_id_produto BIGINT
+);
+
+-- Adicionando as restrições de chave estrangeira
+ALTER TABLE vendas 
+ADD CONSTRAINT vendas_fk1 FOREIGN KEY (promocao_id_promocao) REFERENCES promocao(id_promocao);
+
+ALTER TABLE vendas 
+ADD CONSTRAINT vendas_fk2 FOREIGN KEY (tempo_id_tempo) REFERENCES tempo(id_tempo);
+
+ALTER TABLE vendas 
+ADD CONSTRAINT vendas_fk3 FOREIGN KEY (loja_id_loja) REFERENCES loja(id_loja);
+
+ALTER TABLE vendas 
+ADD CONSTRAINT vendas_fk4 FOREIGN KEY (cliente_id_cliente) REFERENCES cliente(id_cliente);
+
+ALTER TABLE vendas 
+ADD CONSTRAINT vendas_fk5 FOREIGN KEY (produto_id_produto) REFERENCES produto(id_produto);
